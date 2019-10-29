@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class ChessTest {
+public class Chess {
 
 	public enum characterChess {		//define collection of constant
 		WHITE_KING,
