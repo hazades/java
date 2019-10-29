@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Chess {
+public class ChessTest {
 
 	public enum characterChess {		//define collection of constant
 		WHITE_KING,
@@ -145,8 +145,8 @@ public class Chess {
 		System.out.println("\r");							//carriage return or set value to new line
 		
 		for (int i = 0; i < 8; i++) {
-			System.out.print(8-i + ". ");		//print number 1 at bottom
-			//System.out.print(i+1 + ". ");		//print number 1 at top
+			//System.out.print(8-i + ". ");		//print number 1 at bottom
+			System.out.print(i+1 + ". ");		//print number 1 at top
 			
 			for (int j = 0; j < 8; j++) {		
 				
@@ -154,51 +154,39 @@ public class Chess {
 				
 				case BLACK_PAWN:
 					System.out.print("|BP |");
-					//System.out.print("\u265F ");			//unicode value
 					break;
 				case BLACK_ROOK:
 					System.out.print("|BR |");
-					//System.out.print("\u265C ");
 					break;
 				case BLACK_KNIGHT:
 					System.out.print("|BK |");
-					//System.out.print("\u265E ");
 					break;
 				case BLACK_BISHOP:
 					System.out.print("|BB |");
-					//System.out.print("\u265D ");
 					break;
 				case BLACK_QUEEN:
 					System.out.print("|BQ |");
-					//System.out.print("\u265B ");
 					break;
 				case BLACK_KING:
 					System.out.print("|BKG|");
-					//System.out.print("\u265A ");
 					break;
 				case WHITE_PAWN:
 					System.out.print("|WP |");
-					//System.out.print("\u2659 ");
 					break;
 				case WHITE_ROOK:
 					System.out.print("|WR |");
-					//System.out.print("\u2656 ");
 					break;
 				case WHITE_KNIGHT:
 					System.out.print("|WK |");
-					//System.out.print("\u2658 ");
 					break;
 				case WHITE_BISHOP:
 					System.out.print("|WB |");
-					//System.out.print("\u2657 ");
 					break;
 				case WHITE_QUEEN:
 					System.out.print("|WQ |");
-					//System.out.print("\u2655 ");
 					break;
 				case WHITE_KING:
 					System.out.print("|WKG|");
-					//System.out.print("\u2654 ");
 					break;
 				case EMPTY:
 					System.out.print("|   |");
@@ -214,65 +202,103 @@ public class Chess {
 		String[] components = move.split(" ");
 		try {
 			// validates user input
-			if (components.length > 3){
+
+			if ( components[0].length() != 2 || components[2].length() != 2){
 				System.err.println("\r1.Please provide valid move!");
 			}
-			else if ( components[0].length() != 2 || components[2].length() != 2){
-				System.err.println("\r2.Please provide valid move!");
-			}
 			else if ( components[0].charAt(0) < 'a' || components[0].charAt(0) > 'h' || components[0].charAt(1) < '1' || components[0].charAt(1) > '8' ){
-				System.err.println("\r3.Please provide valid move!");
+				System.err.println("\r2.Please provide valid move!, change first value!");
 			}
 			else if ( components[2].charAt(0) < 'a' || components[2].charAt(0) > 'h' || components[2].charAt(1) < '1' || components[2].charAt(1) > '8' ){
-				System.err.println("\r4.Please provide valid move!");
+				System.err.println("\r3.Please provide valid move! change second value!");
 			}
 			else{
-			// make the move: replace original position with characterChess.
+			//### make the move: replace original position with characterChess.###///			
 			int col = components[0].charAt(0) - 97;					//for first position (a-h), a in ascii is 97
-			int row = Math.abs(components[0].charAt(1) - 49-7);		//for second position (1-8), 1 in ascii is 49, 1 at bottom
-			//int row = Math.abs(components[0].charAt(1) - 49);		//for second position (1-8), 1 in ascii is 49, 1 at top
+			int row = Math.abs(components[0].charAt(1) - 49);		//for second position (1-8), 1 in ascii is 49, 1 at top
 			
-			//and place the piece into the new position
+			//###and place the piece into the new position###///	
 			int nCol = components[2].charAt(0) - 97;
-			int nRow = Math.abs(components[2].charAt(1) - 49-7);
-			//int nRow = Math.abs(components[2].charAt(1) - 49);
+			int nRow = Math.abs(components[2].charAt(1) - 49);
+
+			//System.out.println("\rcol: "+(col));
+			//System.out.println("\rrow: "+(row));
+			//System.out.println("\rtolak col: "+(nCol-col));
+			//System.out.println("\rtolak row: "+(nRow-row));
 			
-			//knight moves
-			int Xknight = nCol-col;
-			int Yknight = nRow-row;
-			
-			//if(Xknight>2 || Yknight<8) {
-				if(Xknight==2 || Yknight==1 || Yknight==-1) {
-					//if (isValid(chessboard, row, col, nRow, nCol)){
-						chessboard[Xknight][+Yknight] = chessboard[row][+col];
-						chessboard[row][+col] = characterChess.EMPTY;
-					//}
-				}if(Xknight==-2 || Yknight==1 || Yknight==-1) {
-					chessboard[Xknight][+Yknight] = chessboard[row][+col];
-					chessboard[row][+col] = characterChess.EMPTY;
-				}if(Xknight==1 || Yknight==2 || Yknight==-2) {
-					chessboard[Xknight][+Yknight] = chessboard[row][+col];
-					chessboard[row][+col] = characterChess.EMPTY;
-				}if(Xknight==-1 || Yknight==2 || Yknight==-2) {
-					chessboard[Xknight][+Yknight] = chessboard[row][+col];
+			if ((nCol-col) >= 1 || (nRow-row) >=1 || (nCol-col) <= -1 || (nRow-row) <=-1){
+				if(nCol > nRow) {
+					//System.out.println("\rnew column "+nCol);
+					for(int loopC=1;loopC<=2;loopC++) {
+						if (loopC==1){
+
+						}
+						else {
+							if (isValid(chessboard, row, col, nRow, nCol)){
+								chessboard[nRow][+nCol] = chessboard[row][+col];
+								chessboard[row][+col] = characterChess.EMPTY;
+							}else{
+								System.err.println("\rMove not allowed, row salah\n");
+							}
+						}
+					}
+				}
+				if(nRow > nCol) {
+					//System.out.println("\rnew row "+nRow);
+					for(int loopC=1;loopC<=2;loopC++) {
+						if (loopC==1){
+
+						}
+						else {
+							if (isValid(chessboard, row, col, nRow, nCol)){
+								chessboard[nRow][+nCol] = chessboard[row][+col];
+								chessboard[row][+col] = characterChess.EMPTY;
+							}
+							if (isValid(chessboard, row, col, nRow, nCol)!= true){
+								System.err.println("\rMove not allowed, column salah\n");
+							}
+							else{
+								chessboard[nRow][+nCol] = chessboard[row][+col];
+								chessboard[row][+col] = characterChess.EMPTY;
+							}
+						}
+					}
+				}
+				else {
+					//System.out.println("/rnew row "+nRow+" == col "+nCol);
+					for(int loopC=1;loopC<=2;loopC++) {
+						if (loopC==1){
+
+						}
+						else {
+							if (isValid(chessboard, row, col, nRow, nCol)){
+								chessboard[nRow][+nCol] = chessboard[row][+col];
+								chessboard[row][+col] = characterChess.EMPTY;
+							}
+							if (isValid(chessboard, row, col, nRow, nCol)!= true){
+								System.err.println("\rMove not allowed, column salah row salah\n");
+							}
+							else{
+								chessboard[nRow][+nCol] = chessboard[row][+col];
+								chessboard[row][+col] = characterChess.EMPTY;
+							}
+						}
+					}
+				}
+			}else {
+				//System.out.println("/rnew col "+nCol+" and row "+nRow);
+				if (isValid(chessboard, row, col, nRow, nCol)){
+					chessboard[nRow][+nCol] = chessboard[row][+col];
 					chessboard[row][+col] = characterChess.EMPTY;
 				}
-			//}else
-			//	System.out.println("not valid move for knight");
-			//knight move
-			
-			System.out.println("ASCII : "+col+ " " + row + " " + nCol + " " + nRow);
-			if (isValid(chessboard, row, col, nRow, nCol)){
-				chessboard[nRow][+nCol] = chessboard[row][+col];
-				chessboard[row][+col] = characterChess.EMPTY;
-			}
-			else{
-				System.err.println("Move not allowed");
+				else{
+					System.err.println("\rMove not allowedlaaaa\n");
+				}
 			}
 			
 			}
 		} catch (Exception e) {
-			System.out.println("Error : "+e);
+			System.out.println("/rError : "+e);
 		}
 		
 	}
@@ -323,38 +349,23 @@ public class Chess {
 				 chessboard[nRow][nCol] == characterChess.BLACK_BISHOP ||
 				 chessboard[nRow][nCol] == characterChess.BLACK_QUEEN ||
 				 chessboard[nRow][nCol] == characterChess.BLACK_KING || chessboard[nRow][nCol] == characterChess.EMPTY )
-				 && (nCol == col || nRow == row) ){
+				&& (nCol == col || nRow == row) ){
 				return true;
 				}
 			break;
 		case BLACK_KNIGHT:
-			
-			break;
+			return true;
 		case WHITE_KNIGHT:
-			break;
+			return true;
 		case BLACK_BISHOP:
+			return true;
 		case WHITE_BISHOP:
-			break;
+			return true;
 		case BLACK_QUEEN:
-			if ((chessboard[nRow][nCol] == characterChess.WHITE_ROOK ||
-			 chessboard[nRow][nCol] == characterChess.WHITE_KNIGHT ||
-			 chessboard[nRow][nCol] == characterChess.WHITE_BISHOP ||
-			 chessboard[nRow][nCol] == characterChess.WHITE_QUEEN ||
-			 chessboard[nRow][nCol] == characterChess.WHITE_KING || chessboard[nRow][nCol] == characterChess.EMPTY)
-			 && (nCol == col || nRow == row || nCol == col-1 || nRow == row+1 || nRow == row || nRow == row-1)){
-				return true;
-		}
-		break;
+			return true;
 		case WHITE_QUEEN:
-			if ((chessboard[nRow][nCol] == characterChess.BLACK_ROOK ||
-			 chessboard[nRow][nCol] == characterChess.BLACK_KNIGHT ||
-			 chessboard[nRow][nCol] == characterChess.BLACK_BISHOP ||
-			 chessboard[nRow][nCol] == characterChess.BLACK_QUEEN ||
-			 chessboard[nRow][nCol] == characterChess.BLACK_KING || chessboard[nRow][nCol] == characterChess.EMPTY)
-			 && (nCol == col || nRow == row || nCol == col-1 || nRow == row+1 || nRow == row || nRow == row-1)){
-				return true;
-		}
-			break;
+			return true;
+			
 		case BLACK_KING:
 			if ((chessboard[nRow][nCol] == characterChess.WHITE_ROOK ||
 			 chessboard[nRow][nCol] == characterChess.WHITE_KNIGHT ||
@@ -388,7 +399,7 @@ public class Chess {
 		String move = "";
 		
 		buildChessBoard(chessboard);
-		System.out.println("Input the moves in standard chess notation, such as: “e1 to e5”:\n#only lower case is accepted for alphabert\nonly accepted number form 1-8\n");
+		System.out.println("Input the moves in standard chess notation, such as: â€œe1 to e5â€:\n#only lower case is accepted for alphabert\nonly accepted number form 1-8\n");
 		
 		while(true){
 			printBoard(chessboard);
